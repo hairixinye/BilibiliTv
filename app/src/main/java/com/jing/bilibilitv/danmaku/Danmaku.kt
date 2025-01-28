@@ -8,7 +8,7 @@ fun createDefaultDanmakuContext() = DanmakuContext.create().apply {
     setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3f)
     isDuplicateMergingEnabled = false
     scrollSpeedFactor = 1.2f
-    setScaleTextSize(1.2f)
+    setScaleTextSize(2.8f)
     setMaximumLines(
         mapOf(
             Danmaku.TYPE_SCROLL_RL to 5,
