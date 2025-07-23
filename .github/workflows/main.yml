@@ -16,7 +16,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v4
+      uses: gradle/gradle-build-action@v3
       with:
         arguments: assembleRelease  #  构建 debug APK，你可以改为 assembleRelease 构建 release 版本
     - name: Upload APK
