@@ -2,31 +2,25 @@ name: Build and Upload APK
 
 on:
   push:
-    branches: [ main ]  # 触发构建的分支
+    branches: [ main ]  # 或者你的主分支名称
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4  # 拉取代码
-
+    - uses: actions/checkout@v4
     - name: Set up JDK 11
       uses: actions/setup-java@v4
       with:
         java-version: '11'
-        distribution: 'adopt'  # 保持原 JDK 版本和分发渠道
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3  # 替换为官方推荐的新动作
-
+        distribution: 'adopt'
     - name: Build with Gradle
-      run: ./gradlew assembleRelease  # 用命令行替代 deprecated 的 arguments 参数
-      # Windows 环境需改为：gradlew.bat assembleRelease
-
+      uses: gradle/gradle-build-action@v3
+      with:
+        arguments: assembleRelease  # 构建 debug APK，你可以改为 assembleRelease 构建 release 版本
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-apk
-        path: app/build/outputs/apk/release/*.apk  # 注意：若构建 release，路径需对应 release 目录
-
+        name: app-apk  # 你可以自定义 artifact 的名字
+        path: app/build/outputs/apk/debug/*.apk # 替换为你的 APK 输出路径
