@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 优化触摸屏特性声明 -->
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
+    
+    <!-- 明确声明为TV应用 -->
     <uses-feature
         android:name="android.software.leanback"
         android:required="true" />
@@ -17,8 +21,10 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BilibiliTv">
+        android:theme="@style/Theme.BilibiliTv"
+        tools:targetApi="32">
 
+        <!-- 主启动Activity优化 -->
         <activity
             android:name=".MainActivity"
             android:banner="@mipmap/ic_launcher"
@@ -26,19 +32,54 @@
             android:icon="@mipmap/ic_launcher"
             android:logo="@mipmap/ic_launcher"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.Leanback">
-            <<intent-filter>
+            android:theme="@style/Theme.Leanback"
+            android:launchMode="singleTask">  <!-- 添加启动模式优化 -->
+            
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </</intent-filter>
+            </intent-filter>
         </activity>
 
+        <!-- 视频播放Activity -->
         <activity
             android:name=".playback.VideoPlayActivity"
             android:exported="false"
             android:theme="@style/Theme.Leanback" />
+        
+        <!-- 搜索Activity -->
         <activity
             android:name=".search.SearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Leanback" />
+        
+        <!-- 用户空间Activity -->
+        <activity
+            android:name=".user.UserSpaceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        
+        <!-- 直播相关Activities -->
+        <activity
+            android:name=".live.BilibiliLiveActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Leanback" />
+        <activity
+            android:name=".live.LiveRoomOfAreaActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".live.playback.LiveRoomPlaybackActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Leanback" />
+        
+        <!-- 添加TV主屏幕横幅声明 -->
+        <meta-data
+            android:name="com.google.android.tv.banner"
+            android:resource="@drawable/banner" />
+    </application>
+
+</manifest>
             android:exported="false"
             android:theme="@style/Theme.Leanback" />
         <activity
