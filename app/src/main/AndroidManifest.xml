@@ -27,10 +27,8 @@
         <!-- 主启动Activity优化 -->
         <activity
             android:name=".MainActivity"
-            android:banner="@mipmap/ic_launcher"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:logo="@mipmap/ic_launcher"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Leanback"
             android:launchMode="singleTask">  <!-- 添加启动模式优化 -->
