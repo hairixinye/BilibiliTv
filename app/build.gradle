@@ -4,141 +4,110 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-    id 'com.google.devtools.ksp' version '1.9.0-1.0.13' // 替代 kapt 提高编译速度
 }
 
 android {
     namespace 'com.jing.bilibilitv'
-    compileSdk 34 // 升级到最新 SDK
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.jing.bilibilitv"
         minSdk 28
-        targetSdk 34 // 升级目标 SDK
+        targetSdk 32
         versionCode 1
         versionName "1.0"
-        
-        // 添加多语言支持
-        resourceConfigurations += ["zh", "en"]
+
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true // 启用资源缩减
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            applicationIdSuffix ".debug"
         }
     }
 
     buildFeatures {
         viewBinding true
-        buildConfig true // 启用 BuildConfig 字段
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-    
-    kotlinOptions {
-        jvmTarget = '17'
-        freeCompilerArgs += [
-            '-opt-in=kotlin.RequiresOptIn',
-            '-Xjvm-default=all'
-        ]
     }
 
     packagingOptions {
-        resources {
-            // 优化资源排除规则
-            excludes += [
-                'META-INF/INDEX.LIST',
-                'META-INF/*.md',
-                'META-INF/LICENSE*',
-                '**/kotlin/**'
-            ]
-        }
-    }
-    
-    // 启用构建缓存和配置缓存
-    buildCache {
-        local {
-            directory = new File(rootDir, 'build-cache')
-            removeUnusedEntriesAfterDays = 30
-        }
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/LISCENSE'
+        exclude 'META-INF/LISCENSE.txt'
     }
 }
 
 dependencies {
-    // 使用新版 AndroidX 库
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    
-    // Leanback TV 库 (统一版本)
-    implementation 'androidx.leanback:leanback:1.2.0-alpha02'
-    implementation 'androidx.leanback:leanback-paging:1.2.0-alpha02'
-    implementation 'androidx.leanback:leanback-tab:1.2.0-alpha02'
-    
-    // UI 组件
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    
-    // 导航组件
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
-    
-    // ExoPlayer (统一版本)
-    def exoplayer_version = "2.19.1"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-    implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
-    implementation "com.google.android.exoplayer:extension-okhttp:$exoplayer_version"
-    implementation "com.google.android.exoplayer:extension-leanback:$exoplayer_version"
-    
-    // 图片加载
-    implementation 'io.coil-kt:coil:2.5.0'
-    
-    // 网络请求
-    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
-    
-    // DI (Hilt)
-    def hilt_version = "2.51"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    ksp "com.google.dagger:hilt-compiler:$hilt_version" // 使用 KSP 替代 kapt
-    
-    // 分页组件
-    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
-    
-    // 数据库 (Room)
-    def room_version = "2.6.1"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-paging:$room_version"
-    ksp "androidx.room:room-compiler:$room_version"
-    
-    // 其他实用库
-    implementation 'androidx.palette:palette-ktx:1.0.0'
-    implementation 'com.google.zxing:core:3.5.3'
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.makeramen:roundedimageview:2.3.0'
-    
-    // 本地模块
-    implementation(project(path: ':DanmakuFlameMaster'))
-    
-    // 性能优化工具
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
-    releaseImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
-}
 
-// 配置 KSP
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas".toString())
-    arg("room.incremental", "true")
+    def room_version = '2.4.3'
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.leanback:leanback:1.0.0'
+    implementation('androidx.leanback:leanback-paging:1.1.0-alpha09') {
+        exclude group: 'androidx.leanback', module: 'leanback'
+    }
+    implementation('androidx.leanback:leanback-tab:1.1.0-beta01') {
+        exclude group: 'androidx.leanback', module: 'leanback'
+    }
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // navigation
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+
+    // exoplayer
+    implementation "com.google.android.exoplayer:exoplayer-core:2.18.1"
+    implementation "com.google.android.exoplayer:exoplayer-hls:2.18.1"
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.18.1"
+    implementation "com.google.android.exoplayer:exoplayer-dash:2.18.1"
+    implementation "com.google.android.exoplayer:exoplayer-common:2.18.1"
+    implementation 'com.google.android.exoplayer:extension-okhttp:2.18.1'
+    implementation "com.google.android.exoplayer:extension-leanback:2.18.1"
+
+    // coil
+    implementation 'io.coil-kt:coil:2.2.2'
+
+    // retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // palette
+    implementation 'androidx.palette:palette-ktx:1.0.0'
+
+    // zxing 二维码
+    implementation 'com.google.zxing:core:3.5.0'
+
+    // paing3
+    implementation "androidx.paging:paging-common-ktx:3.1.1"
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+
+    // room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
+
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+//    implementation 'com.github.JavaNoober.BackgroundLibrary:library:1.7.5'
+
+    implementation(project(path: ':DanmakuFlameMaster'))
+
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+    implementation("com.google.protobuf:protobuf-java:3.21.9")
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // https://mvnrepository.com/artifact/org.brotli/dec
+    implementation("org.brotli:dec:0.1.2")
+
+    // https://mvnrepository.com/artifact/cn.hutool/hutool-crypto
+    implementation 'cn.hutool:hutool-crypto:5.8.18'
+
 }
